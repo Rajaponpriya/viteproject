@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage("build") {
       steps {
+          sh 'mvn clean install'
           echo 'building the applictaion...'
       }
     }
@@ -17,4 +18,16 @@ pipeline {
       }
     }
   }
+  post {
+        success {
+            mail to: 'rajaponpriya@gmail.com',
+                 subject: "Build Success",
+                 body: "Build #${env.BUILD_NUMBER} succeeded.\nCheck console output: ${env.BUILD_URL}"
+        }
+        failure {
+            mail to: 'rajaponpriya@gmail.com',
+                 subject: "Build Failed",
+                 body: "Build #${env.BUILD_NUMBER} failed.\nCheck console output: ${env.BUILD_URL}"
+        }
+    }
 }
