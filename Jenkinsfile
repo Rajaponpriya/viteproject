@@ -1,10 +1,5 @@
 pipeline {
   agent any
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '5')) // Corrected parameter name
-    durabilityHint("PERFORMANCE_OPTIMIZED") // Fixed the quote
-    disableConcurrentBuilds()
-  }
   stages {
     stage("Install Dependencies") {
       steps {
@@ -21,13 +16,6 @@ pipeline {
           // Build the application
           sh 'npm run build'
           echo 'Building the application...'
-        }
-      }
-    }
-    stage("Archive") {
-      steps {
-        script {
-          archiveArtifacts(artifacts: '**/*.txt', followSymlinks: false)
         }
       }
     }
