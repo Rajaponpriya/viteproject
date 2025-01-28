@@ -1,33 +1,53 @@
 pipeline {
   agent any
   stages {
-    stage("build") {
+    stage("Install Dependencies") {
       steps {
-          sh 'mvn clean install'
-          echo 'building the applictaion...'
+        script {
+          // Make sure npm is available in the environment
+          sh 'npm install'
+          echo 'Installing dependencies...'
+        }
       }
     }
-    stage("test") {
+    stage("Build") {
       steps {
-          echo 'testing the applictaion...'
+        script {
+          // Build the application
+          sh 'npm run build'
+          echo 'Building the application...'
+        }
       }
     }
-    stage("deploy") {
+    stage("Test") {
       steps {
-          echo 'deploying the applictaion...'
+        script {
+          // Run tests (if applicable, change based on your test framework)
+          sh 'npm test'
+          echo 'Testing the application...'
+        }
+      }
+    }
+    stage("Deploy") {
+      steps {
+        script {
+          // Placeholder for deployment (can be adjusted based on your deployment method)
+          echo 'Deploying the application...'
+        }
       }
     }
   }
   post {
-        success {
-            mail to: 'rajaponpriya@gmail.com',
-                 subject: "Build Success",
-                 body: "Build #${env.BUILD_NUMBER} succeeded.\nCheck console output: ${env.BUILD_URL}"
-        }
-        failure {
-            mail to: 'rajaponpriya@gmail.com',
-                 subject: "Build Failed",
-                 body: "Build #${env.BUILD_NUMBER} failed.\nCheck console output: ${env.BUILD_URL}"
-        }
+    success {
+      mail to: 'rajaponpriya@gmail.com',
+           subject: "Build Success",
+           body: "Build #${env.BUILD_NUMBER} succeeded.\nCheck console output: ${env.BUILD_URL}"
     }
+    failure {
+      mail to: 'rajaponpriya@gmail.com',
+           subject: "Build Failed",
+           body: "Build #${env.BUILD_NUMBER} failed.\nCheck console output: ${env.BUILD_URL}"
+    }
+  }
 }
+
