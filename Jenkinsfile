@@ -1,5 +1,10 @@
 pipeline {
   agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5')) // Corrected parameter name
+    durabilityHint("PERFORMANCE_OPTIMIZED") // Fixed the quote
+    disableConcurrentBuilds()
+  }
   stages {
     stage("Install Dependencies") {
       steps {
