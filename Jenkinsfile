@@ -19,6 +19,13 @@ pipeline {
         }
       }
     }
+    stage("Archive") {
+      steps {
+        script {
+          archiveArtifacts(artifacts: '**/*.txt', followSymlinks: false)
+        }
+      }
+    }
     stage("Test") {
       steps {
         script {
@@ -50,4 +57,3 @@ pipeline {
     }
   }
 }
-
