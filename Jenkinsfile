@@ -10,21 +10,25 @@ pipeline {
         }
       }
     }
-    stage("Build") {
-      steps {
-        script {
-          // Build the application
-          sh 'npm run build'
-          echo 'Building the application...'
+    stage('Parallel Execution') {
+      parallel {
+        stage("Build") {
+          steps {
+            script {
+              // Build the application
+              sh 'npm run build'
+              echo 'Building the application...'
+            }
+          }
         }
-      }
-    }
-    stage("Test") {
-      steps {
-        script {
-          // Run tests (if applicable, change based on your test framework)
-          sh 'npm test'
-          echo 'Testing the application...'
+        stage("Test") {
+          steps {
+            script {
+              // Run tests (if applicable, change based on your test framework)
+              sh 'npm test'
+              echo 'Testing the application...'
+            }
+          }
         }
       }
     }
